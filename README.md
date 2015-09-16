@@ -1,28 +1,12 @@
-testx-pdf-keywords
+testx-xlsx-parser
 =====
 
-A library that extends testx with keywords for testing PDF files. This library is packaged as a npm package
+Simple XLSX file parser for use with the testx library. Converts a test script in a XLSX sheet to testx test script (JSON).
 
-## How does it work
-From the directory of the art code install the package as follows:
-```sh
-npm install testx-pdf-keywords --save
+## API
+This library exposes only one method **parse** that takes 2 arguments *fileName* and *sheetName* and returns a promise that resolves to the JSON representation of the test script on that sheet. Example:
+  
 ```
-
-After installing the package add the keywords to your protractor config file as follows:
-
+  xlsx = require('testx-xlsx-parser')
+  xlsx.parse('xls-files/test.xlsx', 'Sheet1')
 ```
-testx.addKeywords(require('testx-pdf-keywords'))
-```
-
-## Keywords
-
-| Keyword                | Argument name | Argument value  | Description | Supports repeating arguments |
-| ---------------------- | ------------- | --------------- |------------ | ---------------------------- |
-| check in pdf      |               |                 | check that the expected regex matches the text in the PDF file |  |
-|                        | file           | full path to the pdf file; one of **file**, **url** or **link** has to be specified || No |
-|                        | url           | URL of the pdf file; one of **file**, **url** or **link** has to be specified || No |
-|                        | link           | link to the pdf file; one of **file**, **url** or **link** has to be specified || No |
-|                        | timeout        | timeout in milliseconds to wait for the link to the PDF to appear on the screen; ignored if the keyword is used with **file** or **url**;  parameters; defaults to 5000 if not present || No |
-|                        | expect1(2, 3...) | expected regular expression to match the text in the pdf || Yes |
-| check not in pdf  |               |                 | same as **check in pdf**, but checks that the specified regex DOES NOT match |  |
