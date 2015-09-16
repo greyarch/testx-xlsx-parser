@@ -1,0 +1,29 @@
+{
+  "name": "testx-xlsx-parser",
+  "version": "0.1.0",
+  "description": "Simple XLSX file parser for use with the testx library. Converts a test script in a XLSX sheet to testx test script (JSON)",
+  "main": "index.coffee",
+  "dependencies": {
+    "coffee-errors": "^0.8.6",
+    "q": "^1.4.1",
+    "xlsx": "^0.8.0"
+  },
+  "devDependencies": {
+    "coffee-script": "^1.10.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "http://www.github.com/greyarch/testx-xlsx-parser.git"
+  },
+  "keywords": [
+    "xlsx",
+    "test",
+    "testx",
+    "excel"
+  ],
+  "author": "Greyarch BV",
+  "license": "ISC"
+}
