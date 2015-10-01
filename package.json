@@ -5,6 +5,8 @@
   "main": "index.coffee",
   "dependencies": {
     "coffee-errors": "^0.8.6",
+    "lodash": "^3.10.1",
+    "moment": "^2.10.6",
     "q": "^1.4.1",
     "xlsx": "^0.8.0"
   },
