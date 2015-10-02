@@ -4,7 +4,6 @@ xlsx = require 'xlsx'
 formulas = require './formulas'
 
 exports.parse = (xlsFile, sheet) ->
-  formulaUtils = require './utils'
 
   deferred = q.defer()
   wb = xlsx.readFile xlsFile
@@ -18,6 +17,8 @@ exports.parse = (xlsFile, sheet) ->
   deferred.promise
 
 calcWb = (sheets) ->
+  formulaUtils = require './utils'
+    
   resolveRef = (sheetName, ref) ->
     [targetSheet, targetRef] = [sheetName, ref]
     if crossSheetRef = ref.match /^([^\[\]\*\?\:\/\\]+)!([A-Z]+[0-9]+)/
