@@ -2,6 +2,7 @@ q = require 'q'
 xlsx = require 'xlsx'
 
 formulas = require './formulas'
+formulaUtils = require './utils'
 
 exports.parse = (xlsFile, sheet) ->
   deferred = q.defer()
@@ -17,18 +18,18 @@ exports.parse = (xlsFile, sheet) ->
 
 calcWb = (sheets) ->
   resolveRef = (sheetName, ref) ->
-    cell = sheets[sheetName][ref]
+    [targetSheet, targetRef] = [sheetName, ref]
+    if crossSheetRef = ref.match /^([^\[\]\*\?\:\/\\]+)!([A-Z]+[0-9]+)/
+      [targetSheet, targetRef] = crossSheetRef[1..2]
+    cell = sheets[targetSheet][targetRef]
     if cell.f and not cell.calculated
-      cell.v = cell.calculated = calc sheetName, ref
+      cell.v = cell.calculated = calc targetSheet, targetRef
     else
       cell.v
 
   calc = (sheetName, ref) ->
     cell = sheets[sheetName][ref]
-    ff = cell.f.replace(/[^!A-Z]([A-Z]+[0-9]+)|(^[A-Z]+[0-9]+)/g, 'resolveRef(sheetName, "$1$2")')
-    ff = ff.replace(/([A-Za-z0-9]+)!([A-Z]+[0-9]+)/g, 'resolveRef("$1", "$2")')
-    ff = ff.replace(/([A-Z]+)\(/g, 'formulas.$1(')
-    eval ff
+    eval formulaUtils.format(cell.f, sheetName)
 
   calcSheet = (name, sheet) ->
     for cellRef, cellVal of sheet
