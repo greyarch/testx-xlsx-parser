@@ -2,9 +2,10 @@ q = require 'q'
 xlsx = require 'xlsx'
 
 formulas = require './formulas'
-formulaUtils = require './utils'
 
 exports.parse = (xlsFile, sheet) ->
+  formulaUtils = require './utils'
+
   deferred = q.defer()
   wb = xlsx.readFile xlsFile
   calcWb wb.Sheets
