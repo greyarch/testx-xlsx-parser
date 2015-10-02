@@ -1,5 +1,7 @@
 _ = require 'lodash'
 
+excelFormulaUtilities = require('./ExcelFormulaUtilities')
+
 defaultOpts =
     tmplFunctionStart: 'formulas.{{token}}('
     tmplFunctionStop: '{{token}})'
@@ -20,14 +22,10 @@ defaultOpts =
     prefix: ""
     postfix: ""
 
-formatter = ->
-  require('./core')
-  require('./ExcelFormulaUtilities')
 
+module.exports =
   format: (formula, sheetName) ->
     opts = _.extend defaultOpts,
       tmplOperandRange: 'resolveRef("' + sheetName + '", "{{token}}")'
 
     excelFormulaUtilities.formatFormula formula, opts
-
-module.exports = formatter()

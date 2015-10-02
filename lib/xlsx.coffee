@@ -18,7 +18,7 @@ exports.parse = (xlsFile, sheet) ->
 
 calcWb = (sheets) ->
   formulaUtils = require './utils'
-    
+
   resolveRef = (sheetName, ref) ->
     [targetSheet, targetRef] = [sheetName, ref]
     if crossSheetRef = ref.match /^([^\[\]\*\?\:\/\\]+)!([A-Z]+[0-9]+)/
