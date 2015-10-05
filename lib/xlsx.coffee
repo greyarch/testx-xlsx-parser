@@ -20,17 +20,17 @@ calcWb = (sheets) ->
 
   resolveRef = (sheetName, ref) ->
     [targetSheet, targetRef] = [sheetName, ref]
-    if crossSheetRef = ref.match /^([^\[\]\*\?\:\/\\]+)!([A-Z]+[0-9]+)/
+    if crossSheetRef = ref.match /^'?([^\[\]\*\?\:\/\\']+)'?!([A-Z]+[0-9]+)/
       [targetSheet, targetRef] = crossSheetRef[1..2]
-    cell = sheets[targetSheet][targetRef]
+    cell = sheets[targetSheet]?[targetRef]
     if cell?.f and not cell?.calculated
       cell.v = cell.calculated = calc targetSheet, targetRef
     else
       cell?.v or ''
 
   calc = (sheetName, ref) ->
-    cell = sheets[sheetName][ref]
-    eval formulaUtils.format(cell.f, sheetName)
+    cell = sheets[sheetName]?[ref]
+    eval formulaUtils.format(cell.f.replace(/&/g, '+'), sheetName)
 
   calcSheet = (name, sheet) ->
     for cellRef, cellVal of sheet
