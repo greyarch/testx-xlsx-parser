@@ -10,3 +10,7 @@ module.exports =
         moment(n).format(fmt.toUpperCase())
       else
         text n, fmt
+    CELL: ->
+      console.warn 'Warning: "CELL" Excel function is not implemented!'
+    INDIRECT: ->
+      console.warn 'Warning: "INDIRECT" Excel function is not implemented!'

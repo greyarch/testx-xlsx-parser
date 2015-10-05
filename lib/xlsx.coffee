@@ -4,7 +4,6 @@ xlsx = require 'xlsx'
 formulas = require './formulas'
 
 exports.parse = (xlsFile, sheet) ->
-
   deferred = q.defer()
   wb = xlsx.readFile xlsFile
   calcWb wb.Sheets
@@ -24,10 +23,10 @@ calcWb = (sheets) ->
     if crossSheetRef = ref.match /^([^\[\]\*\?\:\/\\]+)!([A-Z]+[0-9]+)/
       [targetSheet, targetRef] = crossSheetRef[1..2]
     cell = sheets[targetSheet][targetRef]
-    if cell.f and not cell.calculated
+    if cell?.f and not cell?.calculated
       cell.v = cell.calculated = calc targetSheet, targetRef
     else
-      cell.v
+      cell?.v or ''
 
   calc = (sheetName, ref) ->
     cell = sheets[sheetName][ref]
@@ -65,9 +64,10 @@ getKeyword = (rows, i) ->
         "Full name": row['A'].v
         Comment: comment?.trim() || ''
       arguments: {}
-    cols = Object.keys(rows[i - 1]).sort (l, r) -> l > r
-    for col in cols
-      keyword.arguments[prevRow[col]?.v] = row[col]?.v || ''
+    if rows[i - 1] # are there any arguments at all?
+      cols = Object.keys(rows[i - 1]).sort (l, r) -> l > r
+      for col in cols
+        keyword.arguments[prevRow[col]?.v] = row[col]?.v || ''
     keyword
   else
     null
