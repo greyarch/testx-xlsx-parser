@@ -36,6 +36,8 @@ calcWb = (sheets) ->
     for cellRef, cellVal of sheet
       if cellVal.f
         resolveRef name, cellRef
+      else
+        cellVal.v = cellVal.w
 
   for shName, sh of sheets
     calcSheet shName, sh

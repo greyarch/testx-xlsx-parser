@@ -10,8 +10,9 @@ module.exports =
     TODAY: today
     NOW: today
     TEXT: (n, fmt) ->
-      fDate = moment([1900, 0, 1]).add(n, 'days').format(fmt.toUpperCase())
-      if moment(fDate, fmt).isValid()
+      dateFormat = fmt.toUpperCase().replace /J/g, 'Y' # Dutch to English date format
+      fDate = moment([1900, 0, 1]).add(n, 'days').format(dateFormat)
+      if moment(fDate, dateFormat).isValid()
         fDate
       else
         text n, fmt
