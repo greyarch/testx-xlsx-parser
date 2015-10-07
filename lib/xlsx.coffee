@@ -5,7 +5,9 @@ formulas = require './formulas'
 
 exports.parse = (xlsFile, sheet) ->
   deferred = q.defer()
-  wb = xlsx.readFile xlsFile
+  wb = xlsx.readFile xlsFile,
+    cellNF: true
+    cellDates: true
   calcWb wb.Sheets
   scriptSheet = wb.Sheets[sheet]
   rows = getRows scriptSheet
@@ -69,7 +71,7 @@ getKeyword = (rows, i) ->
     if rows[i - 1] # are there any arguments at all?
       cols = Object.keys(rows[i - 1]).sort (l, r) -> l > r
       for col in cols
-        keyword.arguments[prevRow[col]?.v] = row[col]?.v || ''
+        keyword.arguments[prevRow[col]?.v] = xlsx.SSF.format(row[col]?.z, row[col]?.v) || ''
     keyword
   else
     null
