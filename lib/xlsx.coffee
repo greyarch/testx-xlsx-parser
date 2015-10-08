@@ -32,7 +32,8 @@ calcWb = (sheets) ->
 
   calc = (sheetName, ref) ->
     cell = sheets[sheetName]?[ref]
-    eval formulaUtils.format(cell.f.replace(/&/g, '+'), sheetName)
+    frm = cell.f.replace(/&/g, '+').replace(/\n/g, ' ').replace(/\r/g, '')
+    eval formulaUtils.format(frm, sheetName)
 
   calcSheet = (name, sheet) ->
     for cellRef, cellVal of sheet
