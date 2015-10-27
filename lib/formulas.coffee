@@ -10,6 +10,10 @@ module.exports =
     TEXT: (n, fmt) -> ssf.format fmt, n
     TODAY: today
     NOW: today
+    VLOOKUP: (key, matrix, index) ->
+      matrix.reduce (memo, row) ->
+        if row[0] == key then row[index-1] else memo
+      ,'vlookup failed'
     CELL: ->
       console.warn 'Warning: "CELL" Excel function is not implemented!'
     INDIRECT: ->
