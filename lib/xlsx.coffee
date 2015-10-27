@@ -20,10 +20,21 @@ exports.parse = (xlsFile, sheet) ->
 calcWb = (sheets) ->
   formulaUtils = require './utils'
 
+  toMatrix = (targetSheet, ref1, ref2) ->
+    charRange = (a,b) -> [a.charCodeAt(0)..b.charCodeAt(0)].map (c) -> String.fromCharCode c
+    [startCol,startRow] = (ref1.match /([A-Z]+)([0-9]+)/)[1..2]
+    [endCol, endRow] = (ref2.match /([A-Z]+)([0-9]+)/)[1..2]
+
+    for row in [(parseInt startRow)..(parseInt endRow)]
+      for col in charRange(startCol, endCol)
+        resolveRef targetSheet, "#{col}#{row}"
+
   resolveRef = (sheetName, ref) ->
     [targetSheet, targetRef] = [sheetName, ref]
     if crossSheetRef = ref.match /^'?([^\[\]\*\?\:\/\\']+)'?!([A-Z]+[0-9]+)/
       [targetSheet, targetRef] = crossSheetRef[1..2]
+    if rangeRef = ref.match /\$([A-Z]+[0-9]+):\$([A-Z]+[0-9]+)/
+      return toMatrix targetSheet, rangeRef[1], rangeRef[2]
     cell = sheets[targetSheet]?[targetRef]
     if cell?.f and not cell?.calculated
       cell.v = cell.calculated = calc targetSheet, targetRef
