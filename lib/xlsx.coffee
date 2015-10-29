@@ -33,8 +33,8 @@ calcWb = (sheets) ->
     [targetSheet, targetRef] = [sheetName, ref]
     if crossSheetRef = ref.match /^'?([^\[\]\*\?\:\/\\']+)'?!([A-Z]+[0-9]+)/
       [targetSheet, targetRef] = crossSheetRef[1..2]
-    if rangeRef = ref.match /\$([A-Z]+[0-9]+):\$([A-Z]+[0-9]+)/
-      return toMatrix targetSheet, rangeRef[1], rangeRef[2]
+    if rangeRef = ref.match /\$?([A-Z]+)\$?([0-9]+):\$?([A-Z]+)\$?([0-9]+)/
+      return toMatrix targetSheet, "#{rangeRef[1]}#{rangeRef[2]}", "#{rangeRef[3]}#{rangeRef[4]}"
     cell = sheets[targetSheet]?[targetRef]
     if cell?.f and not cell?.calculated
       cell.v = cell.calculated = calc targetSheet, targetRef
