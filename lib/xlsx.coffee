@@ -9,12 +9,14 @@ exports.parse = (xlsFile, sheet) ->
     cellNF: true
     cellDates: true
   calcWb wb.Sheets
-  scriptSheet = wb.Sheets[sheet]
-  rows = getRows scriptSheet
-  steps = for row, i in rows
-    getKeyword(rows, i)
-  deferred.resolve
-    steps: (s for s in steps when s)
+  if scriptSheet = wb.Sheets[sheet]
+    rows = getRows scriptSheet
+    steps = for row, i in rows
+      getKeyword(rows, i)
+    deferred.resolve
+      steps: (s for s in steps when s)
+  else
+    deferred.reject(new Error("There is no sheet '#{sheet}' in file '#{xlsFile}'!"))
   deferred.promise
 
 calcWb = (sheets) ->
