@@ -2,12 +2,13 @@ formulajs = require 'formulajs'
 _ = require 'lodash'
 moment = require 'moment'
 ssf = require('xlsx').SSF
+i18n = require './i18n'
 
 today = -> moment().diff(moment([1900, 0, 1]), 'days') + 2
 
 module.exports =
   _.extend formulajs,
-    TEXT: (n, fmt) -> ssf.format fmt, n
+    TEXT: (n, fmt) -> ssf.format i18n.translate(fmt), n
     TODAY: today
     NOW: today
     VLOOKUP: (key, matrix, index) ->

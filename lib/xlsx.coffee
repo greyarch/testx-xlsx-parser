@@ -2,8 +2,10 @@ q = require 'q'
 xlsx = require 'xlsx'
 
 formulas = require './formulas'
+i18n = require './i18n'
 
-exports.parse = (xlsFile, sheet) ->
+exports.parse = (xlsFile, sheet, locale) ->
+  global.xlsx = locale: locale
   deferred = q.defer()
   wb = xlsx.readFile xlsFile,
     cellNF: true
@@ -58,7 +60,7 @@ calcWb = (sheets) ->
   for shName, sh of sheets
     calcSheet shName, sh
 
-getRows = (sheet) ->
+getRows = (sheet, locale) ->
   r = /([a-zA-Z]+)(\d+)/i
   rows = []
   for key, value of sheet
@@ -67,6 +69,7 @@ getRows = (sheet) ->
       row = parseInt row
       col = col.toUpperCase()
       unless rows[row] then rows[row] = []
+      value = i18n.format value
       rows[row][col] = value
   rows
 

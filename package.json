@@ -1,7 +1,7 @@
 {
   "name": "testx-xlsx-parser",
-  "version": "0.5.2",
-  "description": "Simple XLSX file parser for use with the testx library. Converts a test script in a XLSX sheet to testx test script (JSON)",
+  "version": "0.6.0",
+  "description": "Simple XLSX file parser for use with the testx library. Converts an XLSX sheet to testx test script (JSON)",
   "main": "index.coffee",
   "dependencies": {
     "coffee-errors": "^0.8.6",
