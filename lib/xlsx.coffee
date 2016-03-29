@@ -55,7 +55,7 @@ calcWb = (sheets) ->
       if cellVal.f
         resolveRef name, cellRef
       else
-        cellVal.v = cellVal.w
+        cellVal.v = cellVal.w?.replace(/&#10;/g, '\n') or ''
 
   for shName, sh of sheets
     calcSheet shName, sh
