@@ -19,3 +19,5 @@ module.exports =
       console.warn 'Warning: "CELL" Excel function is not implemented!'
     INDIRECT: ->
       console.warn 'Warning: "INDIRECT" Excel function is not implemented!'
+    LEFT: (target, num) ->
+      target.toString().substring 0, num
