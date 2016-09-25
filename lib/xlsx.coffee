@@ -1,5 +1,6 @@
 q = require 'q'
 xlsx = require 'xlsx'
+pkg  = require '../package.json'
 
 formulas = require './formulas'
 i18n = require './i18n'
@@ -17,6 +18,10 @@ exports.parse = (xlsFile, sheet, locale) ->
       getKeyword(rows, i)
     deferred.resolve
       steps: (s for s in steps when s)
+      meta:
+        file: xlsFile
+        sheet: sheet
+        parser: "#{pkg.name}@#{pkg.version}"
   else
     deferred.reject(new Error("There is no sheet '#{sheet}' in file '#{xlsFile}'!"))
   deferred.promise
