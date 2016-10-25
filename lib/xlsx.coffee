@@ -1,4 +1,3 @@
-q = require 'q'
 xlsx = require 'xlsx'
 pkg  = require '../package.json'
 
@@ -7,7 +6,6 @@ i18n = require './i18n'
 
 exports.parse = (xlsFile, sheet, locale) ->
   global.xlsx = locale: locale
-  deferred = q.defer()
   wb = xlsx.readFile xlsFile,
     cellNF: true
     cellDates: true
@@ -16,15 +14,17 @@ exports.parse = (xlsFile, sheet, locale) ->
     rows = getRows scriptSheet
     steps = for row, i in rows
       getKeyword(rows, i)
-    deferred.resolve
-      steps: (s for s in steps when s)
-      meta:
-        file: xlsFile
-        sheet: sheet
-        parser: "#{pkg.name}@#{pkg.version}"
+
+    steps: (s for s in steps when s)
+    source:
+      file: xlsFile
+      sheet: sheet
+    meta:
+      parser:
+        name: pkg.name
+        version: pkg.version
   else
-    deferred.reject(new Error("There is no sheet '#{sheet}' in file '#{xlsFile}'!"))
-  deferred.promise
+    new Error("There is no sheet '#{sheet}' in file '#{xlsFile}'!")
 
 calcWb = (sheets) ->
   formulaUtils = require './utils'
